@@ -19,7 +19,7 @@ class Thread(models.Model):
     pass
 
 
-class Comment(models.Model):
+class Node(models.Model):
     thread = models.ForeignKey(Thread)
     locator = models.CharField(max_length=DEPTH * DIGITS, db_index=True)
     #depth = models.IntegerField(editable=False)
@@ -40,12 +40,12 @@ class Comment(models.Model):
     def parent(self):
         if self.parent_locator == '':
             return None
-        return Comment.objects.get(thread=self.thread,
+        return Node.objects.get(thread=self.thread,
                                    locator=self.parent_locator)
 
     @property
     def descendants(self):
-        family = Comment.objects.filter(locator__startswith=self.locator)
+        family = Node.objects.filter(locator__startswith=self.locator)
         return family.exclude(pk=self.pk)
 
     @property
@@ -70,6 +70,6 @@ class Comment(models.Model):
         return self.locator + encode(next_ordinal)
 
     def create_child(self, **kwargs):
-        return Comment.objects.create(thread=self.thread,
+        return Node.objects.create(thread=self.thread,
                                       locator=self.next_child_locator,
                                       **kwargs)
