@@ -1,18 +1,12 @@
 from django.db import models
 
+from cheaptrees.encode import Encoder
 
-BASE = 10
-DIGITS = 1
+
 DEPTH = 10
-
-
-# naive base10 encodings
-def encode(position):
-    return chr(position + ord('0'))
-
-
-def decode(encoded):
-    return ord(encoded) - ord('0')
+encoder = Encoder()
+DIGITS, BASE = encoder.digits, encoder.base
+decode, encode = encoder.decode, encoder.encode
 
 
 class Thread(models.Model):

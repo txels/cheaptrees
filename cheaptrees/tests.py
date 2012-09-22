@@ -1,7 +1,8 @@
 from django.db import models
 from django.test import TestCase
 
-from cheaptrees.models import encode, decode, Thread, Node
+from cheaptrees.encode import Encoder
+from cheaptrees.models import Thread, Node
 
 
 class Comment(Node):
@@ -10,11 +11,18 @@ class Comment(Node):
 
 class TestEncoding(TestCase):
 
+    def test_init(self):
+        encoder = Encoder(base=24)
+        self.assertEquals(encoder.base, 24)
+        self.assertEquals(encoder.digits, 1)
+
     def test_encode(self):
-        self.assertEquals('4', encode(4))
+        encoder = Encoder(base=10)
+        self.assertEquals('4', encoder.encode(4))
 
     def test_decode(self):
-        self.assertEquals(4, decode('4'))
+        encoder = Encoder(base=10)
+        self.assertEquals(4, encoder.decode('4'))
 
 
 LOCATORS = ['11', '0', '1', '01', '00', '02', '111']
