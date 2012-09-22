@@ -25,8 +25,13 @@ class Node(models.Model):
     #depth = models.IntegerField(editable=False)
 
     class Meta:
+        abstract = True
         ordering = ['locator']
         unique_together = ('thread', 'locator')
+
+    @property
+    def manager(self):
+        return self.__class__.objects
 
     @property
     def position(self):
@@ -40,12 +45,12 @@ class Node(models.Model):
     def parent(self):
         if self.parent_locator == '':
             return None
-        return Node.objects.get(thread=self.thread,
-                                   locator=self.parent_locator)
+        return self.manager.get(thread=self.thread,
+                                locator=self.parent_locator)
 
     @property
     def descendants(self):
-        family = Node.objects.filter(locator__startswith=self.locator)
+        family = self.manager.filter(locator__startswith=self.locator)
         return family.exclude(pk=self.pk)
 
     @property
@@ -70,6 +75,6 @@ class Node(models.Model):
         return self.locator + encode(next_ordinal)
 
     def create_child(self, **kwargs):
-        return Node.objects.create(thread=self.thread,
-                                      locator=self.next_child_locator,
-                                      **kwargs)
+        return self.manager.create(thread=self.thread,
+                                   locator=self.next_child_locator,
+                                   **kwargs)
