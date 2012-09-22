@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from treeer.models import encode, decode, Thread, Comment
+from cheaptrees.models import encode, decode, Thread, Comment
 
 
 class TestEncoding(TestCase):

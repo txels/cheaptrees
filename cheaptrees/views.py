@@ -1,5 +1,5 @@
 from django.views.generic import DetailView
-from treeer.models import Thread
+from cheaptrees.models import Thread
 
 
 class ThreadDetail(DetailView):

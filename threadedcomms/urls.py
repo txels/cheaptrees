@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from treeer.views import ThreadDetail
+from cheaptrees.views import ThreadDetail
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
