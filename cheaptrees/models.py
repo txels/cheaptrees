@@ -3,10 +3,9 @@ from django.db import models
 from cheaptrees.encode import Encoder
 
 
-DEPTH = 10
 encoder = Encoder()
 DIGITS = encoder.digits
-decode, encode = encoder.decode, encoder.encode
+DEPTH = 10
 
 
 class Thread(models.Model):
@@ -29,7 +28,7 @@ class Node(models.Model):
 
     @property
     def position(self):
-        return decode(self.locator[DIGITS:])
+        return encoder.decode(self.locator[DIGITS:])
 
     @property
     def parent_locator(self):
@@ -65,8 +64,8 @@ class Node(models.Model):
         if last_child is None:
             next_ordinal = 0
         else:
-            next_ordinal = decode(self.last_child.locator[-1:]) + 1
-        return self.locator + encode(next_ordinal)
+            next_ordinal = encoder.decode(self.last_child.locator[-1:]) + 1
+        return self.locator + encoder.encode(next_ordinal)
 
     def create_child(self, **kwargs):
         return self.manager.create(thread=self.thread,
