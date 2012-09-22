@@ -5,7 +5,7 @@ from cheaptrees.encode import Encoder
 
 DEPTH = 10
 encoder = Encoder()
-DIGITS, BASE = encoder.digits, encoder.base
+DIGITS = encoder.digits
 decode, encode = encoder.decode, encoder.encode
 
 

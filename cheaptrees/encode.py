@@ -14,7 +14,7 @@ class EncoderException(Exception):
 
 class Encoder(object):
 
-    def __init__(self, base=10, start_char='0'):
+    def __init__(self, base=64, start_char='0'):
         self.base = base
         # number of bits needed to represent a number in the given base:
         numbits = needed_bits(base)
