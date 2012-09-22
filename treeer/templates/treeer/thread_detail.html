@@ -1,0 +1,8 @@
+<html>
+<body>
+    <ul>
+    {% for comment in thread.comment_set.all %}
+        <li>{{comment.locator}}</li>
+    {% endfor %}
+    </ul>
+</body>
