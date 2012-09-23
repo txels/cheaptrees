@@ -64,7 +64,7 @@ class TestEncoding(TestCase):
         encoder = Encoder(base=4096)
         self.assertRaises(EncoderException, encoder.decode, 'o')
         self.assertRaises(EncoderException, encoder.decode, '0AR')
-        self.assertRaises(EncoderException, encoder.decode, '   ')
+        self.assertRaises(EncoderException, encoder.decode, '  ')
 
 
 LOCATORS = ['11', '0', '1', '01', '00', '02', '111']

@@ -34,9 +34,14 @@ class Encoder(object):
         value = 0
         if len(encoded) != self.digits:
             raise EncoderException(
-                    'Length of encoded value {0} should be {1}'
+                    'Length of encoded value "{0}" should be {1}'
                     .format(encoded, self.digits))
         for i in range(0, self.digits):
             next_digit = (ord(encoded[i]) - ord(self.start_char))
+            if next_digit < 0 or next_digit >= MAX_VALUES_BYTE:
+                raise EncoderException(
+                        'Invalid encoded value "{0}" for base {1}'
+                        .format(encoded[i], self.base))
+
             value = value * MAX_VALUES_BYTE + next_digit
         return value
