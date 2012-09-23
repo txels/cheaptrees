@@ -22,11 +22,21 @@ class Encoder(object):
         self.start_char = start_char
 
     def encode(self, position):
-        if self.digits != 1:
-            raise EncoderException('More than 1 digit per level not supported')
-        return chr(position + ord(self.start_char))
+        n = position
+        encoded = ''
+        for i in range(0, self.digits):
+            next_char = chr(n % MAX_VALUES_BYTE + ord(self.start_char))
+            encoded = next_char + encoded
+            n = n // MAX_VALUES_BYTE
+        return encoded
 
     def decode(self, encoded):
-        if self.digits != 1:
-            raise EncoderException('More than 1 digit per level not supported')
-        return ord(encoded) - ord(self.start_char)
+        value = 0
+        if len(encoded) != self.digits:
+            raise EncoderException(
+                    'Length of encoded value {0} should be {1}'
+                    .format(encoded, self.digits))
+        for i in range(0, self.digits):
+            next_digit = (ord(encoded[i]) - ord(self.start_char))
+            value = value * MAX_VALUES_BYTE + next_digit
+        return value

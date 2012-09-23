@@ -1,7 +1,7 @@
 from django.db import models
 from django.test import TestCase
 
-from cheaptrees.encode import Encoder, needed_bits
+from cheaptrees.encode import Encoder, EncoderException, needed_bits
 from cheaptrees.models import Thread, Node
 
 
@@ -45,6 +45,26 @@ class TestEncoding(TestCase):
         self.assertEquals('o', encoder.encode(63))
         for n in range(0, 64):
             self.assertEquals(n, encoder.decode(encoder.encode(n)))
+
+    def test_base_4096(self):
+        encoder = Encoder(base=4096)
+        self.assertEquals(encoder.digits, 2)
+        self.assertEquals('00', encoder.encode(0))
+        self.assertEquals('0R', encoder.encode(34))
+        self.assertEquals('R0', encoder.encode(34 * 64))
+        self.assertEquals('oo', encoder.encode(4095))
+        all_encodings = set()
+        for n in range(0, 4096):
+            encoded = encoder.encode(n)
+            self.assertEquals(n, encoder.decode(encoded))
+            all_encodings.add(encoded)
+        self.assertEquals(len(all_encodings), 4096)
+
+    def test_decoding_errors_base_4096(self):
+        encoder = Encoder(base=4096)
+        self.assertRaises(EncoderException, encoder.decode, 'o')
+        self.assertRaises(EncoderException, encoder.decode, '0AR')
+        self.assertRaises(EncoderException, encoder.decode, '   ')
 
 
 LOCATORS = ['11', '0', '1', '01', '00', '02', '111']
