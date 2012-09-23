@@ -1,7 +1,7 @@
 from django.db import models
 from django.test import TestCase
 
-from cheaptrees.encode import Encoder, EncoderException, needed_bits
+from cheaptrees.anybase import Encoder, EncoderException, needed_bits
 from cheaptrees.models import Thread, Node
 
 

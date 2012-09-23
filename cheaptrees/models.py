@@ -1,6 +1,6 @@
 from django.db import models
 
-from cheaptrees.encode import Encoder
+from cheaptrees.anybase import Encoder
 
 
 encoder = Encoder()
