@@ -94,6 +94,7 @@ class TestThreadedComment(TestCase):
 
     def test_parent(self):
         comment = Comment.objects.get(locator='111')
+        self.assertEqual(comment.text, 'Hi')
         self.assertEqual(comment.parent.locator, '11')
         self.assertEqual(comment.parent.thread, comment.thread)
         self.assertEqual(comment.parent.parent.locator, '1')
@@ -134,7 +135,9 @@ class TestThreadedComment(TestCase):
     def test_create_child(self):
         comment = Comment.objects.get(locator='0')
         self.assertEqual(comment.children.count(), 3)
-        child = comment.create_child()
+        child = comment.create_child(text='I cannot agree less')
         self.assertEqual(comment.children.count(), 4)
         self.assertEqual(child.locator, '03')
         self.assertEqual(child.children.count(), 0)
+        fetched_child = Comment.objects.get(locator='03')
+        self.assertEqual(fetched_child.text, 'I cannot agree less')
